@@ -3,6 +3,9 @@ This repository contains the code to run a blockchain solution and a wallet clie
 I coded this to learn how a blockchain works and get better understanding about public and private keys, and consensus algorithms.
 Some parts are solved trying to keep things simples, for instance, nothing is saved in a database. The blockchain and the wallet keeps data only in memory.
 
+[![Go](https://github.com/martinsaporiti/gochain/actions/workflows/go.yml/badge.svg)](https://github.com/martinsaporiti/gochain/actions/workflows/go.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/martinsaporiti/gochain)](https://goreportcard.com/report/github.com/martinsaporiti/gochain)
+
 With this code you will be able to:
 * Create user's wallets.
 * Run n nodes, each one with its own version of the blockchain.

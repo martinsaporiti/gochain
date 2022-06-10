@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Wallet</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+            $(function() {
+                $.ajax({
+                    url: '/wallet',
+                    type: 'POST',
+                    success: function(response) {
+                        $('#public_key').val(response['public_key'])
+                        $('#private_key').val(response['private_key'])
+                        $('#blockchain_address').val(response['blockchain_address'])
+                    },
+                    error: function(error) {
+                        console.log(error)
+                    }
+                });
+
+                $('#send_money_button').click(function(){
+                    // let confirm_text = 'Are you sure you want to send ' + $('#amount').val() + '?';
+                    // let confirm_result = confirm(confirm_text);
+                    // if (confirm_result !== true) {
+                    //     return;
+                    // }
+
+                    let transaction_data = {
+                        sender_private_key: $('#private_key').val(),
+                        sender_blockchain_address: $('#blockchain_address').val(),
+                        recipient_blockchain_address: $('#recipient_blockchain_address').val(),
+                        sender_public_key: $('#public_key').val(),
+                        value: $('#amount').val()
+                    }
+
+                    $.ajax({
+                        url: 'transaction',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(transaction_data),
+                        success: function(response) {
+                            let message_response =$.parseJSON(response).message;
+                            if ( message_response=== 'fail') {
+                                alert('Send Fail');
+                                return;
+                            }
+                            swal("Good job!", message_response, "success")
+                        },
+                        error: function(error) {
+                            console.log(error)
+                            alert('Send Fail');
+                        }
+                    })
+                })
+
+                function reload_amount() {
+                    let data = {'blockchain_address': $('#blockchain_address').val()}
+                    $.ajax({
+                        url: '/wallet/amount',
+                        type: 'GET',
+                        data: data,
+                        success: function(response) {
+                            let amount = response['amount']
+                            $('#wallet_amount').text(amount)
+                            console.log(amount);
+                        },
+                        error: function(error) {
+                            console.log(error)
+                        }
+                    })
+                };
+
+
+                // $('#reload_amount_button').click(function(){
+                //      reload_amount();
+                // });
+
+                setInterval(reload_amount, 15000);
+            });
+
+            
+
+        </script>
+    </head>
+    <body>
+        <div class="container" style="margin-top: 30px; margin-bottom: 30px;">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>My Wallet</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- <button class="btn btn-primary" id="reload_amount_button">Reload</button> -->
+                </div>    
+                <div class="col-md-4">
+                    <h3>Amount: <span id="wallet_amount">0</span> <span id="currency">USD</span></h3>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="public_key" class="form-label">Public Key</label>
+                        <textarea rows="4" class="form-control" id="public_key"></textarea>
+                      </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="private_key" class="form-label">Private Key</label>
+                        <textarea rows="3" class="form-control" id="private_key"></textarea>
+                      </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="blockchain_address" class="form-label">Your Blockchain Address</label>
+                        <input type="text" class="form-control" id="blockchain_address">
+                      </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                </div>    
+                <div class="col-md-4">
+                    <h3>Send Money</h3>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="recipient_blockchain_address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="recipient_blockchain_address">
+                      </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Amount</label>
+                        <input type="text" class="form-control" id="amount">
+                      </div>
+                </div>
+                <div class="col-lg-4"></div>
+            </div>
+            <div class="row">    
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary btn-lg" id="send_money_button">Send</button>
+                </div>
+                <div class="col-lg-4"></div>
+            </div>
+        </div>        
+    </body>
+</html>

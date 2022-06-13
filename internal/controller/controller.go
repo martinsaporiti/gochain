@@ -94,7 +94,6 @@ func (c *controller) updateBlockchainFromNetwork() {
 
 	if longestChain != nil {
 		c.blockchain.SetChain(longestChain)
-		// TODO: Evaluate this:
 		c.txPool.UpdateFromBlock(c.blockchain.LastBlock())
 		log.Printf("New chain is %d blocks long and is valid", len(longestChain))
 	}
@@ -153,6 +152,6 @@ func (c *controller) CalculateTotalAmount(blockchainAddress string) float32 {
 // Notifies the neighbors of the new block.
 func (c *controller) newBlockMined(newBlockMinedChannel chan *blockchain.Block) {
 	for block := range newBlockMinedChannel {
-		c.gateway.NotifyNeighbors("add_block", http.MethodPost, block)
+		c.gateway.NotifyNeighbors("block", http.MethodPost, block)
 	}
 }

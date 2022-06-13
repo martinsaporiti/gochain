@@ -156,7 +156,7 @@ func (bcs *BlockchainServer) Start() {
 	http.HandleFunc("/", bcs.GetChainHandler)
 	http.HandleFunc("/transactions", bcs.TransactionsHandler)
 	http.HandleFunc("/amount", bcs.AmountHandler)
-	http.HandleFunc("/add_block", bcs.AddNewBlockHandler)
+	http.HandleFunc("/block", bcs.AddNewBlockHandler)
 	log.Printf("Listening on port %d", bcs.config.Port)
 	log.Fatal(http.ListenAndServe("0.0.0.0:"+strconv.Itoa(int(bcs.config.Port)), nil))
 }

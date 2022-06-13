@@ -1,4 +1,6 @@
 # Blockchain sample coded with Go :rocket:
+This project is still in progress. Although I didn't finish it yet, it's working and you can run it.
+
 This repository contains the code to run a blockchain solution and a wallet client.
 I coded this to learn how a blockchain works and get better understanding about public and private keys, and consensus algorithms.
 Some parts are solved trying to keep things simples, for instance, nothing is saved in a database. The blockchain and the wallet keeps data only in memory.

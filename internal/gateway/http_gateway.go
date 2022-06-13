@@ -89,7 +89,7 @@ func (g *httpGateway) GetChains(wg *sync.WaitGroup) chan []*blockchain.Block {
 	for _, n := range g.neighbors {
 		go func(wg *sync.WaitGroup, neighbor string, chainsChann chan []*blockchain.Block) {
 			defer wg.Done()
-			endpoint := fmt.Sprintf("http://%s/chain", n)
+			endpoint := fmt.Sprintf("http://%s/chain", neighbor)
 			log.Printf("Calling to resolve conflics: endpoint %s\n", endpoint)
 			resp, _ := http.Get(endpoint)
 			if resp.StatusCode == 200 {

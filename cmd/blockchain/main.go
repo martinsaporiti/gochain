@@ -22,7 +22,7 @@ func main() {
 
 	miningDifficulty := os.Getenv("MINING_DIFFICULTY")
 	if miningDifficulty == "" {
-		log.Printf("MINING_DIFFICULTY not set, using default value %s", "5")
+		log.Printf("MINING_DIFFICULTY not set, using default value: %s", "5")
 		miningDifficulty = "5"
 	}
 
